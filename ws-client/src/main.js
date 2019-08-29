@@ -5,7 +5,7 @@ Vue.config.productionTip = false
 
 Vue.use(VueRouter)
 
-import Dashboard from './components/Dashboard.vue';
+import Dashboard from './components/Principal.vue';
 
 const routes = [
     { path: '/', component: Dashboard },
