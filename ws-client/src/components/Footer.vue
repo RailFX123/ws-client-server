@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer fix-footer has-background-light">
+  <footer class="navbar  has-background-light is-fixed-bottom">
   <div class="content has-text-centered">
     <p>
       <strong>Bulma</strong> by <a href="https://jgthms.com">Jeremy Thomas</a>. The source code is licensed
@@ -18,14 +18,5 @@ module.exports={
 }
 </script>s
 <style>
-.fix-footer {
-  bottom: 0;
-  left: 0;
-  position:sticky;
-  right: 0;
-  z-index: 30;
-}
-.footer{
-    padding: 1em !important;
-}
+
 </style>

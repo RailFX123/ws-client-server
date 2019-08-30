@@ -21,7 +21,7 @@
     <button
       class="button is-primary"
       @click="isOpen = !isOspen;"
-    ><i class="fas fa-eye    "></i></button>
+    ><i class="fas fa-eye"></i></button>
   </div>
 </template>
 

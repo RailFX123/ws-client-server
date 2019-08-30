@@ -2,21 +2,22 @@
   <div>
     <Navbar></Navbar>
     <Body></Body>
-    <Footer></Footer>
+    <!-- <Footer></Footer> -->
   </div>
 </template>
 
 <script>
 import Navbar from "./Navbar";
-import Footer from "./Footer";
+//import Footer from "./Footer";
 import Body from "./Body";
 
 export default {
   name: "app",
   components: {
     Navbar,
-    Body,
-    Footer
+    Body
+    //,
+   // Footer
   }
 };
 </script>

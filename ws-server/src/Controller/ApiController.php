@@ -1,6 +1,5 @@
 <?php
 namespace App\Controller;
-
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ApiController
@@ -45,7 +44,13 @@ class ApiController
      */
     public function respond($data, $headers = [])
     {
-        return new JsonResponse($data, $this->getStatusCode(), $headers);
+        $ok = array(
+            'Access-Control-Allow-Origin' => '*',
+            'Access-Control-Allow-Headers'=> 'X-Requested-With, Content-Type, Accept, Origin, Authorization',
+            'Access-Control-Allow-Methods'=>'DELETE, POST, PATCH, GET, OPTIONS, PUT',
+        );
+        return new JsonResponse($data, $this->getStatusCode(), $ok);
+
     }
 
     /**
@@ -60,8 +65,12 @@ class ApiController
         $data = [
             'errors' => $errors,
         ];
-
-        return new JsonResponse($data, $this->getStatusCode(), $headers);
+        $ok = array(
+            'Access-Control-Allow-Origin' => '*',
+            'Access-Control-Allow-Headers'=>'Origin, X-Requested-With, Content-Type, Accept',
+            'Access-Control-Allow-Methods'=>'DELETE, POST, PATCH, GET, OPTIONS, PUT',
+        );
+        return new JsonResponse($data, $this->getStatusCode(), $ok);
     }
 
     /**
