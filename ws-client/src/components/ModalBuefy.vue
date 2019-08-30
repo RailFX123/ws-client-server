@@ -73,7 +73,7 @@ export default {
             url_trailer: this.url_trailer
           }
         ;
-        const response = axios.post("http://172.16.2.150:8000/movies",ok);
+        const response = axios.post("http://172.16.2.150/wsPHP/ws-server/public/movies",ok);
         this.movies = response.data;
         this.isLoading = false;
       } catch (e) {

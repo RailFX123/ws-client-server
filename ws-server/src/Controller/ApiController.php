@@ -46,7 +46,7 @@ class ApiController
     {
         $ok = array(
             'Access-Control-Allow-Origin' => '*',
-            'Access-Control-Allow-Headers'=> 'X-Requested-With, Content-Type, Accept, Origin, Authorization',
+            'Access-Control-Allow-Headers'=>'Origin, X-Requested-With, Content-Type, Accept',
             'Access-Control-Allow-Methods'=>'DELETE, POST, PATCH, GET, OPTIONS, PUT',
         );
         return new JsonResponse($data, $this->getStatusCode(), $ok);

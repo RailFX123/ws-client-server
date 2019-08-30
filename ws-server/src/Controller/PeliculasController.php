@@ -45,7 +45,7 @@ class PeliculasController extends ApiController
         $em->persist($movie);
         $em->flush();
 
-        return $this->respondCreated($movieRepository->transform($movie));
+        return $this->respond($movieRepository->transform($movie));
     }
 
     /**
