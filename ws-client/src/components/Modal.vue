@@ -1,8 +1,8 @@
 <template>
   <div>
     <transition name="modal">
-      <div v-if="isOpen">
-        <div class="overlay" @click.self="isOpen = false;">
+      <div v-if="isImageModalActive">
+        <div class="overlay" @click="isImageModalActive = false">
           <div class="changeyourmind">
             <iframe
               allowfullscreen="allowfullscreen"
@@ -12,28 +12,27 @@
               webkitallowfullscreen="webkitallowfullscreen"
               width="100%"
               height="100%"
-              v-bind:src="youtube"
+              :src="youtube"
             ></iframe>
           </div>
         </div>
       </div>
     </transition>
-    <button
-      class="button is-primary"
-      @click="isOpen = !isOspen;"
-    ><i class="fas fa-eye"></i></button>
+    <button class="button is-primary" @click="isImageModalActive = !isImageModalActive">
+      <i class="fas fa-eye"></i>
+    </button>
   </div>
 </template>
 
 
 <script>
 export default {
-  data: function() {
+  data() {
     return {
-      isOpen: false
+      isImageModalActive: false
     };
   },
-  props: ['youtube']
+  props: { youtube: String }
 };
 </script>
 <style scoped>
@@ -74,5 +73,8 @@ export default {
   background: #00000094;
   z-index: 999;
   transition: opacity 0.2s ease;
+}
+iframe {
+  height: 100%;
 }
 </style>

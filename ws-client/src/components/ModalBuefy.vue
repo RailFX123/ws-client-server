@@ -6,36 +6,45 @@
     </button>
 
     <b-modal :active.sync="isCardModalActive">
-      <form action>
+      <form action="#" method="POST" autocomplete="on">
         <div class="modal-card" style="width: auto;">
           <header class="modal-card-head">
             <p class="modal-card-title">{{editar ? 'Editar':'Crear'}}</p>
           </header>
           <section class="modal-card-body">
             <b-field label="Titulo">
-              <b-input type="text" :value="titulo" max="255" placeholder="Your email" required></b-input>
+              <b-input
+                type="text"
+                name="titulo"
+                v-model="tt"
+                max="255"
+                placeholder="Titanes del pacifico"
+                required
+              ></b-input>
             </b-field>
             <b-field label="Año de salida">
               <b-input
                 type="number"
                 min="1950"
                 :max="new Date().getFullYear()"
-                :value="year"
-                placeholder="Your email"
+                v-model="yy"
+                placeholder="2002"
                 required
               ></b-input>
             </b-field>
             <b-field label="Url Video">
-              <b-input type="text" :value="url_year" max="255" placeholder="Your email" required></b-input>
+              <b-input type="text" v-model="uu" max="255" placeholder="http://www.youtube.com/watch?v=21381" required></b-input>
             </b-field>
           </section>
           <footer class="modal-card-foot">
-            <button
-              class="button"
+            <button 
+              class="button is-primary"
+              @click="crear(editar)"
               type="button"
-              @click="created()"
-            >{{!editar ? 'Guardar':'Crear'}}</button>
-            <button class="button" type="button" @click="isCardModalActive = false">Cerrar</button>
+            >{{editar ? 'Guardar':'Crear'}}</button>
+            
+            <button class="button is-danger" type="button" @click="isCardModalActive = false">Cerrar</button>
+            <h1>{{tt}}</h1>
           </footer>
         </div>
       </form>
@@ -50,35 +59,69 @@ export default {
   data() {
     return {
       isImageModalActive: false,
-      isCardModalActive: false
+      isCardModalActive: false,
+      tt: this.titulo,
+      yy: this.year,
+      uu: this.url_year,
+      ii: this.id
     };
   },
   props: {
     editar: Boolean,
     titulo: String,
-    year: String,
     url_year: String,
-    id: Number
+    year: String,
+    id: Number,
+    movie: Object
   },
   methods: {
-    alertar() {
-      alert("Hola");
+    onInput(newInputValue) {
+      this.$emit("msgChange", newInputValue);
     },
-    created() {
-      try {
-       const ok = 
-          {
-            titulo: this.titulo,
-            year_salida: this.year,
-            url_trailer: this.url_trailer
-          }
-        ;
-        const response = axios.post("http://172.16.2.150/wsPHP/ws-server/public/movies",ok);
-        this.movies = response.data;
-        this.isLoading = false;
-      } catch (e) {
-        this.isLoading = false;
+    update(){},
+    crear(e) {
+      const ok = {
+        id:this.ii,
+        titulo: this.tt,
+        year_salida: this.yy,
+        url_trailer: this.uu
+      };
+      var url;
+      if(!e){
+        url="http://35.225.171.201/ws-server/public/index.php/movies";
+      }else{
+        url="http://35.225.171.201/ws-server/public/index.php/update";
       }
+      axios
+        .post(url, ok)
+        .then(response => {
+          if (response.data.errors === "Not found!") {
+            alert("hola jj");
+          } else {
+            this.$buefy.notification.open({
+              message: "Operacion Exitosa",
+              type: "is-success"
+            });
+            this.isCardModalActive=false;
+            location.reload();
+
+          }
+        })
+        .catch((error)=> {
+          var err;
+          switch(error.response.status){
+            case 422:
+              err="Completar los campos antes de enviar";
+            break;
+            default:
+              err="Error no controlado, status:"+error.response.status;
+            break;
+          }
+          this.$buefy.notification.open({
+            message: "La operacion Fallo :C :"+err,
+            type: "is-danger"
+          });
+        });
     }
   }
 };

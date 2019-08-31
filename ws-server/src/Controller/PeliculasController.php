@@ -33,12 +33,43 @@ class PeliculasController extends ApiController
         }
 
         // validate the title
-        if (!$request->get('titulo')) {
+        if (!$request->get('titulo')||!$request->get('year_salida')||!$request->get('url_trailer')) {
             return $this->respondValidationError('Please provide a title!');
         }
 
         // persist the new movie
         $movie = new Estrenos;
+        $movie->setTitulo($request->get('titulo'));
+        $movie->setYearSalida($request->get('year_salida'));
+        $movie->setUrlTrailer($request->get('url_trailer'));
+        $em->persist($movie);
+        $em->flush();
+
+        return $this->respond($movieRepository->transform($movie));
+    }
+
+    /**
+     * @Route("/update", methods="POST")
+     */
+    public function update(Request $request, EstrenosRepository $movieRepository, EntityManagerInterface $em)
+    {
+        $request = $this->transformJsonBody($request);
+
+        if (!$request) {
+            return $this->respondValidationError('Please provide a valid request!');
+        }
+
+        // validate the title
+        if (!$request->get('titulo')||!$request->get('year_salida')||!$request->get('url_trailer')) {
+            return $this->respondValidationError('Please provide a title!');
+        }
+
+        // persist the new movie
+        $movie = $movieRepository->find($request->get('id'));;
+        if (!$movie) {
+            return $this->respondNotFound();
+        }
+        
         $movie->setTitulo($request->get('titulo'));
         $movie->setYearSalida($request->get('year_salida'));
         $movie->setUrlTrailer($request->get('url_trailer'));

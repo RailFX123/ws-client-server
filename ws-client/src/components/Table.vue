@@ -1,7 +1,7 @@
 <template>
   <section>
     <section class="section">
-      <modal class="modalin"></modal>
+      <modal ></modal>
     </section>
     <b-table
       :data="isEmpty ? [] :movies"
@@ -19,16 +19,18 @@
         <b-table-column field="Año Salida" label="Año Salida">{{ props.row.year_salida}}</b-table-column>
         <b-table-column field="Año Salida" label="Actions">
           <div class="buttons">
-            <button class="button is-danger" @click="removeMovie(props.row.id) ">
+            <button  class="button is-danger" @click="removeMovie(props.row) ">
               <i class="fa fa-trash" aria-hidden="true"></i>
             </button>
             <modal
+            class=" modalin"
               :editar="true"
               :id="props.row.id"
               :year="props.row.year_salida"
               :titulo="props.row.titulo"
               :url_year="props.row.url_trailer"
             ></modal>
+            <modalY :youtube="props.row.url_trailer"></modalY>
           </div>
         </b-table-column>
       </template>
@@ -50,11 +52,13 @@
 <script>
 import axios from "axios";
 import modal from "./ModalBuefy";
+import modalY from "./Modal";
 //import Vue from "vue";
 
 export default {
   components: {
-    modal
+    modal,
+    modalY
   },
   data() {
     return {
@@ -72,7 +76,7 @@ export default {
   },
   async created() {
     try {
-      const response = await axios.get("http://172.16.2.150:8000/movies");
+      const response = await axios.get("http://35.225.171.201/ws-server/public/index.php/movies");
       this.movies = response.data;
       this.isLoading = false;
     } catch (e) {
@@ -83,16 +87,16 @@ export default {
     removeMovie(movie) {
       ///movies/{id}/delete
       axios
-        .get("http://172.16.2.150:8000/movies/" + movie + "/delete")
+        .get("http://35.225.171.201/ws-server/public/index.php/movies/" + movie.id + "/delete")
         .then(response => {
           if (response.data.errors === "Not found!") {
             alert("hola jj");
           } else {
-            this.movies.pop(movie);
             this.$buefy.notification.open({
               message: "Operacion Exitosa",
               type: "is-success"
             });
+            location.reload();
           }
         })
         .catch(() => {
@@ -108,6 +112,6 @@ export default {
 </script>
 <style scoped>
 .modalin {
-  margin-right: 1em;
+  margin-right: 9px;
 }
 </style>

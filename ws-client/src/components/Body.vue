@@ -17,44 +17,8 @@
         <h2
           class="subtitle"
         >En esta parte podran insertar, seleccionar, actualizar y borrar peliculas</h2>
-       <!-- <span class="help is-info" v-if="isLoading">Loading...</span> -->
-         <!-- 
-        <table class="table is-responsive is-hoverable is-striped mx-auto" v-else>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Titulo</th>
-              <th>Año Salida</th>
-              <th>Trailer</th>
-              <th>Acciones</th>
-              <th>
-                <button class="button is-primary">
-                  <i class="fa fa-plus-circle" aria-hidden="true"></i>
-                </button>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            <template v-for="movie in movies">
-              <tr v-bind:key="movie.id">
-                <td>{{ movie.id }}</td>
-                <td>{{ movie.titulo }}</td>
-                <td>{{ movie.year_salida }}</td>
-                <td>{{ movie.url_trailer }}</td>
-                <td class="has-text-centered m1">
-                  <div class="buttons are-medium">
-                    <Modal class="spacio-button" :youtube="movie.url_trailer"></Modal>
-                    <button class="button is-primary" v-on:click="removeMovie(movie)">
-                      <i class="fa fa-trash" aria-hidden="true"></i>
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            </template>
-          </tbody>
-        </table> -->
-        <tablita></tablita>
       </div>
+       <tablita></tablita>
     </section>
   </div>
 </template>
@@ -62,14 +26,10 @@
 <script>
 import axios from "axios";
 import Vue from "vue";
-// import MovieForm from "./MovieForm.vue";
-//import Modal from "./ModalBuefy";
 import tablita from "./Table";
-// import Table from "./Table";
+
 export default {
   components: {
-    // MovieForm,
-  //  Modal,
     tablita
   },
   data() {
@@ -85,7 +45,7 @@ export default {
     async increaseCount(movie) {
       // axios.defaults.headers.common['Authorization'] = `Bearer ${await this.$auth.getAccessToken()}`
       axios
-        .post("http://localhost:8000/movies/" + movie.id + "/count")
+        .post("http://35.225.171.201/ws-server/public/index.php/movies/" + movie.id + "/count")
         .then(response => {
           movie.count = response.data.count;
           this.countUpdatingTable[movie.id] = false;
@@ -105,7 +65,7 @@ export default {
     removeMovie(movie) {
       ///movies/{id}/delete
       axios
-        .delete("http://localhost:8000/movies/" + movie.id + "/delete")
+        .delete("http://35.225.171.201/ws-server/public/index.php/movies/" + movie.id + "/delete")
         .then(response => {
           if (response.data.errors === "Not found!") {
             alert("hola jj");
