@@ -80,26 +80,6 @@ class PeliculasController extends ApiController
     }
 
     /**
-     * @Route("/movies/{id}/changeurl/{newurl}/", methods="GET")
-     */
-    public function changeurl($id, $newurl, EntityManagerInterface $em, EstrenosRepository $movieRepository)
-    {
-        $movie = $movieRepository->find($id);
-
-        if (!$movie) {
-            return $this->respondNotFound();
-        }
-
-        $movie->setUrlTrailer($newurl);
-        $em->persist($movie);
-        $em->flush();
-
-        return $this->respond([
-            'url_trailer' => $movie->getUrlTrailer(),
-        ]);
-    }
-
-    /**
      * @Route("/movies/{id}/delete", methods="GET")
      */
     public function deleteEstreno($id, EntityManagerInterface $em, EstrenosRepository $movieRepository)
